@@ -15,7 +15,7 @@ import (
 // @securityDefinitions.apikey Bearer-Access
 // @in header
 // @name Access
-// @description Type: Bearer YOUR_REFRESH_TOKEN
+// @description Type: Bearer YOUR_ACCESS_TOKEN
 
 // @securityDefinitions.apikey Bearer-Refresh
 // @in header
