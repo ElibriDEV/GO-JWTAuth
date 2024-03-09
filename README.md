@@ -39,11 +39,13 @@ Add to env:
 MONGO_URL="YOUR URL WITH CREDENTIALS"
 ```
 
-Running:
+Run MongoDB:
 
 ```bash
 $ docker-compose -f docker-compose-local.yml up
 ```
+
+Run application:
 
 ```bash
 $ go build main.go
