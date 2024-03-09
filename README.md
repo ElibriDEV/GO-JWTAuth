@@ -48,7 +48,7 @@ $ docker-compose -f docker-compose-local.yml up
 Run application:
 
 ```bash
-$ go build main.go
+$ go run main.go
 ```
 
 ## Using case

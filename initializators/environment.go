@@ -51,7 +51,7 @@ func (environment *EnvStruct) validate() {
 	typeOfS := field.Type()
 	for fieldIndex := 0; fieldIndex < field.NumField(); fieldIndex++ {
 		if field.Field(fieldIndex).Interface() == "" {
-			log.Fatal(".env empty value of key ", typeOfS.Field(fieldIndex).Name)
+			log.Fatal(".env undefined key ", typeOfS.Field(fieldIndex).Name)
 		}
 	}
 	return
