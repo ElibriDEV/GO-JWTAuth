@@ -1,0 +1,84 @@
+basePath: /api
+definitions:
+  auth.TokenResponse:
+    properties:
+      accessToken:
+        example: string
+        type: string
+      refreshToken:
+        example: string
+        type: string
+    type: object
+  response.ErrorResponse:
+    properties:
+      message:
+        example: string
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  title: GO JWT-Auth
+  version: "1.0"
+paths:
+  /auth/refresh/:
+    get:
+      consumes:
+      - application/json
+      description: Update access & refresh tokens
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - Bearer-Access: []
+      - Bearer-Refresh: []
+      summary: Refresh
+      tags:
+      - auth
+  /auth/sign-in/:
+    get:
+      consumes:
+      - application/json
+      description: Get access & refresh tokens
+      parameters:
+      - description: User-GUID
+        in: query
+        name: guid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Sign-in
+      tags:
+      - auth
+securityDefinitions:
+  Bearer-Access:
+    in: header
+    name: Access
+    type: apiKey
+  Bearer-Refresh:
+    in: header
+    name: Refresh
+    type: apiKey
+swagger: "2.0"
