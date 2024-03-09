@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/refresh/": {
+        "/auth/refresh": {
             "get": {
                 "security": [
                     {
@@ -58,7 +58,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/sign-in/": {
+        "/auth/sign-in": {
             "get": {
                 "description": "Get access \u0026 refresh tokens",
                 "consumes": [

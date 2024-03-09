@@ -21,7 +21,7 @@ info:
   title: GO JWT-Auth
   version: "1.0"
 paths:
-  /auth/refresh/:
+  /auth/refresh:
     get:
       consumes:
       - application/json
@@ -47,7 +47,7 @@ paths:
       summary: Refresh
       tags:
       - auth
-  /auth/sign-in/:
+  /auth/sign-in:
     get:
       consumes:
       - application/json

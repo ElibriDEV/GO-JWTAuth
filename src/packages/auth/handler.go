@@ -27,7 +27,7 @@ func CreateGroup(rootGroup *gin.RouterGroup) *gin.RouterGroup {
 // @Param        guid   query      string  true  "User-GUID"
 // @Success      200  {object}  TokenResponse
 // @failure 400 {object} response.ErrorResponse
-// @Router       /auth/sign-in/ [get]
+// @Router       /auth/sign-in [get]
 func (handler HandlerAuth) signIn(context *gin.Context) {
 	guidParam := context.Query("guid")
 	if guidParam == "" {
@@ -55,7 +55,7 @@ func (handler HandlerAuth) signIn(context *gin.Context) {
 // @Success      200  {object}  TokenResponse
 // @failure 400 {object} response.ErrorResponse
 // @failure 401 {object} response.ErrorResponse
-// @Router       /auth/refresh/ [get]
+// @Router       /auth/refresh [get]
 func (handler HandlerAuth) refresh(context *gin.Context) {
 	access := context.GetHeader("Access")
 	refresh := context.GetHeader("Refresh")
