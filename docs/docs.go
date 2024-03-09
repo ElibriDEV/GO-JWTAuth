@@ -123,11 +123,13 @@ const docTemplate = `{
     },
     "securityDefinitions": {
         "Bearer-Access": {
+            "description": "Type: Bearer YOUR_REFRESH_TOKEN",
             "type": "apiKey",
             "name": "Access",
             "in": "header"
         },
         "Bearer-Refresh": {
+            "description": "Type: Bearer YOUR_REFRESH_TOKEN",
             "type": "apiKey",
             "name": "Refresh",
             "in": "header"

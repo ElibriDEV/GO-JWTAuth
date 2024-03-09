@@ -74,10 +74,12 @@ paths:
       - auth
 securityDefinitions:
   Bearer-Access:
+    description: 'Type: Bearer YOUR_REFRESH_TOKEN'
     in: header
     name: Access
     type: apiKey
   Bearer-Refresh:
+    description: 'Type: Bearer YOUR_REFRESH_TOKEN'
     in: header
     name: Refresh
     type: apiKey

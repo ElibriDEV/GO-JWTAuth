@@ -15,10 +15,12 @@ import (
 // @securityDefinitions.apikey Bearer-Access
 // @in header
 // @name Access
+// @description Type: Bearer YOUR_REFRESH_TOKEN
 
 // @securityDefinitions.apikey Bearer-Refresh
 // @in header
 // @name Refresh
+// @description Type: Bearer YOUR_REFRESH_TOKEN
 
 func main() {
 	handler := new(src.ServerHandler)
