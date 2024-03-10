@@ -9,5 +9,5 @@ import (
 func Encode(str string) string {
 	hash := sha512.New()
 	hash.Write([]byte(str))
-	return fmt.Sprintf("%x", hash.Sum(initializators.Env.Hash))
+	return fmt.Sprintf("%x", hash.Sum(initializators.Config.Hash))
 }

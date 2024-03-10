@@ -27,11 +27,11 @@ func main() {
 	server := new(src.Server)
 
 	initializators.LoadEnv()
-	initializators.MongoInit(initializators.Env.MongoURL)
+	initializators.MongoInit(initializators.Config.MongoURL)
 
-	log.Print("Swagger docs: http://localhost:", initializators.Env.ApplicationPort, "/docs/index.html")
+	log.Print("Swagger docs: http://localhost:", initializators.Config.ApplicationPort, "/docs/index.html")
 
-	if err := server.Run(initializators.Env.ApplicationPort, handler.InitRoutes()); err != nil {
+	if err := server.Run(initializators.Config.ApplicationPort, handler.InitRoutes()); err != nil {
 		log.Fatal(err.Error())
 	}
 }

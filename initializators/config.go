@@ -8,9 +8,9 @@ import (
 	"reflect"
 )
 
-var Env EnvStruct
+var Config ConfigStruct
 
-type EnvStruct struct {
+type ConfigStruct struct {
 	MongoInitDBRootUsername string
 	MongoInitDBRootPassword string
 	MongoURL                string
@@ -30,7 +30,7 @@ func getEnv(path ...string) {
 	}
 }
 
-func (environment *EnvStruct) setEnvironmentData() {
+func (environment *ConfigStruct) setEnvironmentData() {
 	environment.MongoInitDBRootUsername = os.Getenv("MONGO_INITDB_ROOT_USERNAME")
 	environment.MongoInitDBRootPassword = os.Getenv("MONGO_INITDB_ROOT_PASSWORD")
 	environment.MongoURL = os.Getenv("MONGO_URL")
@@ -44,7 +44,7 @@ func (environment *EnvStruct) setEnvironmentData() {
 	environment.ApplicationPort = os.Getenv("APPLICATION_PORT")
 }
 
-func (environment *EnvStruct) validate() {
+func (environment *ConfigStruct) validate() {
 	environment.setEnvironmentData()
 
 	field := reflect.ValueOf(*environment)
@@ -59,8 +59,8 @@ func (environment *EnvStruct) validate() {
 
 func LoadEnv() {
 	getEnv(".env")
-	Env = EnvStruct{}
-	Env.setEnvironmentData()
-	Env.validate()
+	Config = ConfigStruct{}
+	Config.setEnvironmentData()
+	Config.validate()
 	return
 }

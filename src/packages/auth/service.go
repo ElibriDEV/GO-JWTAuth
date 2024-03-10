@@ -39,7 +39,7 @@ func (service *ServiceAuth) generateSingleToken(guid string, expires time.Durati
 }
 
 func (service *ServiceAuth) generateRefreshToken(guid string) string {
-	refreshToken, err := service.generateSingleToken(guid, time.Duration(initializators.Env.RefreshTTL)*24*time.Hour)
+	refreshToken, err := service.generateSingleToken(guid, time.Duration(initializators.Config.RefreshTTL)*24*time.Hour)
 	if err != nil {
 		log.Fatal("Refresh signature error: ", err.Error())
 	}
@@ -56,7 +56,7 @@ func (service *ServiceAuth) generateRefreshToken(guid string) string {
 }
 
 func (service *ServiceAuth) generateAccessToken(guid string) string {
-	accessToken, err := service.generateSingleToken(guid, time.Duration(initializators.Env.AccessTTL)*time.Minute)
+	accessToken, err := service.generateSingleToken(guid, time.Duration(initializators.Config.AccessTTL)*time.Minute)
 	if err != nil {
 		log.Fatal("Access signature error: ", err.Error())
 	}
@@ -123,5 +123,5 @@ func (service *ServiceAuth) Refresh(accessToken, refreshToken string) (string, s
 }
 
 func NewAuthService() *ServiceAuth {
-	return &ServiceAuth{initializators.Env.SignKey}
+	return &ServiceAuth{initializators.Config.SignKey}
 }

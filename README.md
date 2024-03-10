@@ -39,7 +39,7 @@ Add to env:
 MONGO_URL="YOUR URL WITH CREDENTIALS"
 ```
 
-Run MongoDB:
+Run MongoDB with docker or your local:
 
 ```bash
 $ docker-compose -f docker-compose-local.yml up
