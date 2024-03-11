@@ -1,23 +1,13 @@
 package auth
 
 import (
-	"context"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"jwt-auth/initializators"
 	"log"
 	"strings"
 	"time"
 )
-
-type UserToken struct {
-	ID      primitive.ObjectID `bson:"_id"`
-	Guid    string
-	Refresh string
-}
 
 type tokenClaims struct {
 	jwt.StandardClaims
@@ -25,7 +15,8 @@ type tokenClaims struct {
 }
 
 type ServiceAuth struct {
-	signKey string
+	signKey    string
+	repository UserTokenRepository
 }
 
 func (service *ServiceAuth) generateSingleToken(guid string, expires time.Duration) (string, error) {
@@ -43,15 +34,7 @@ func (service *ServiceAuth) generateRefreshToken(guid string) string {
 	if err != nil {
 		log.Fatal("Refresh signature error: ", err.Error())
 	}
-	_, err = initializators.MongoManager.Collection.UpdateOne(
-		context.TODO(),
-		bson.D{{"guid", guid}},
-		bson.D{{"$set", bson.D{{"refresh", Encode(refreshToken)}}}},
-		options.Update().SetUpsert(true),
-	)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	go service.repository.Insert(guid, refreshToken, make(chan interface{}))
 	return refreshToken
 }
 
@@ -109,13 +92,11 @@ func (service *ServiceAuth) Refresh(accessToken, refreshToken string) (string, s
 	if err != nil {
 		return "", "", err
 	}
-	var result UserToken
-	err = initializators.MongoManager.Collection.FindOne(
-		context.TODO(),
-		bson.D{{"guid", refreshData.GUID}},
-	).Decode(&result)
+	ch := make(chan *UserToken)
+	go service.repository.GetOne(refreshData.GUID, ch)
+	dbData := <-ch
 	refreshEncoded := Encode(refresh)
-	if err != nil || accessData.IssuedAt != refreshData.IssuedAt || refreshEncoded != result.Refresh {
+	if err != nil || accessData.IssuedAt != refreshData.IssuedAt || refreshEncoded != dbData.Refresh {
 		return "", "", errors.New("unauthorized")
 	}
 	newRefresh, newAccess := service.generateTokens(refreshData.GUID)
@@ -123,5 +104,5 @@ func (service *ServiceAuth) Refresh(accessToken, refreshToken string) (string, s
 }
 
 func NewAuthService() *ServiceAuth {
-	return &ServiceAuth{initializators.Config.SignKey}
+	return &ServiceAuth{signKey: initializators.Config.SignKey, repository: UserTokenRepository{}}
 }
