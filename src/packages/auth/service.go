@@ -69,10 +69,10 @@ func (service *ServiceAuth) parseToken(token string) (*tokenClaims, string, erro
 		}
 		return []byte(service.signKey), nil
 	})
-	if err != nil {
-		return nil, "", err
-	}
 	claims, ok := parseToken.Claims.(*tokenClaims)
+	if err != nil {
+		return claims, tokenParts[1], err
+	}
 	if !ok {
 		return nil, "", errors.New("unauthorized")
 	}
@@ -86,7 +86,6 @@ func (service *ServiceAuth) SignIn(guid string) (string, string) {
 func (service *ServiceAuth) Refresh(accessToken, refreshToken string) (string, string, error) {
 	accessData, _, err := service.parseToken(accessToken)
 	if err != nil {
-		return "", "", err
 	}
 	refreshData, refresh, err := service.parseToken(refreshToken)
 	if err != nil {
